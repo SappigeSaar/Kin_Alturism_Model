@@ -10,12 +10,48 @@ using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
 using System.Diagnostics;
 
-int[,] hundos = new int[10, 1000];
 
-Main main;
-for (int i = 0; i < 1000; i++)
+for(int allele = 0; allele < 11; allele++)
 {
-    main = new Main(); //make this take a seed uwu
+    Console.WriteLine("Started work on allele " +  allele.ToString());
+    //1000 times population at 10 points of 1 allele
+    int[][] hundos = new int[1000][];
+    int[] seeds = new int[1000];
+
+    Random seedgenerator = new Random();
+    for (int i = 0; i < 1000; i++)
+    {
+        seeds[i] = seedgenerator.Next();
+        hundos[i] = new int[10];
+    }
+
+    MainButPopulationOutput main = new MainButPopulationOutput(seeds, hundos, allele);
+
+
+    string path = "..\\..\\..\\output\\populationsForAllele" + allele.ToString() + ".txt";
+    Stream file = File.Open(path, FileMode.OpenOrCreate);
+    StreamWriter writer = new StreamWriter(file);
+
+    writer.WriteLine("Population for allele" + allele.ToString() + " with seed _ at time increment 0, 100, 200, ..., 1000");
+    writer.Write("\n");
+    for (int i = 0; i < 1000; i++)
+    {
+        //seed at start of line
+        writer.Write("Seed " + seeds[i]);
+        //write population at start
+        writer.Write(", 4");
+        //write population for each increment
+        for (int j = 0; j < 10; j++)
+        {
+            writer.Write(", " + hundos[i][j].ToString());
+        }
+        //start new line
+        writer.Write('\n');
+    }
+
+    writer.Close();
+
+    Console.WriteLine("I finished allele " + allele.ToString() + ">w<");
 }
 
 
